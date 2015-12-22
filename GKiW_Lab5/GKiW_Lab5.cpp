@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "tiny_obj_loader.h"
+#include <vector>
 
 #pragma region Zmienne globalne
 
@@ -8,6 +10,7 @@ double T = 0.0;
 
 int mouseX = 0;
 int mouseY = 0;
+GLuint boy;
 
 bool captureMouse = true;
 bool free3DMovement = false;
@@ -21,6 +24,116 @@ GLuint texCheckboard_linear_mm;
 GLuint texCheckboard_linear_mm_linear;
 
 #pragma endregion
+
+struct SFace {
+        int v[3];
+        int n[3];
+        int t[3];
+};
+ 
+GLuint LoadObj(char * file) {
+ 
+        /*FILE * fp = fopen(file, "r");
+ 
+        if (fp == NULL) {
+                printf("ERROR: Cannot read model file \"%s\".\n", file);
+                return -1;
+        }
+ 
+        std::vector<vec3> * v = new std::vector<vec3>();
+        std::vector<vec3> * n = new std::vector<vec3>();
+        std::vector<vec3> * t = new std::vector<vec3>();
+        std::vector<SFace> * f = new std::vector<SFace>();
+ 
+        char buf[128];
+ 
+        while (fgets(buf, 128, fp) != NULL) {
+                if (buf[0] == 'v' && buf[1] == ' ') {
+                        vec3 * vertex = new vec3();
+                        sscanf(buf, "v %f %f %f", &vertex->x, &vertex->y, &vertex->z);
+                        v->push_back(*vertex);
+                }
+                if (buf[0] == 'v' && buf[1] == 't') {
+                        vec3 * vertex = new vec3();
+                        sscanf(buf, "vt %f %f", &vertex->x, &vertex->y);
+                        t->push_back(*vertex);
+                }
+                if (buf[0] == 'v' && buf[1] == 'n') {
+                        vec3 * vertex = new vec3();
+                        sscanf(buf, "vn %f %f %f", &vertex->x, &vertex->y, &vertex->z);
+                        n->push_back(*vertex);
+                }
+                if (buf[0] == 'f' && buf[1] == ' ') {
+                        SFace * face = new SFace();
+                        sscanf(buf, "f %d/%d/%d %d/%d/%d %d/%d/%d",
+                                &face->v[0], &face->t[0], &face->n[0],
+                                &face->v[1], &face->t[1], &face->n[1],
+                                &face->v[2], &face->t[2], &face->n[2]
+                        );
+                        f->push_back(*face);
+                }
+        }
+ 
+        fclose(fp);*/
+
+		std::vector<vec3> * v = new std::vector<vec3>();
+        std::vector<vec3> * n = new std::vector<vec3>();
+        std::vector<vec3> * t = new std::vector<vec3>();
+        //std::vector<SFace> * f = new std::vector<SFace>();
+
+		std::vector<tinyobj::shape_t> shapes;
+		std::vector<tinyobj::material_t> materials;
+		std::string err;
+		bool ret = tinyobj::LoadObj(shapes, materials, err, file);
+		
+		if (!err.empty()) { // `err` may contain warning message.
+		  std::cerr << err << std::endl;
+		}
+
+		for (size_t i = 0; i < shapes.size(); i++) {
+		  for (size_t v = 0; v < shapes[i].mesh.positions.size() / 3; v++) {
+			printf("  v[%ld] = (%f, %f, %f)\n", v,
+			  shapes[i].mesh.positions[3*v+0],
+			  shapes[i].mesh.positions[3*v+1],
+			  shapes[i].mesh.positions[3*v+2]);
+		  }
+		}
+ 
+        GLuint dlId;
+        dlId = glGenLists(1);
+        glNewList(dlId, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                /*for (int i = 0; i < f->size(); ++i) {
+                        for (int j = 0; j < 3; ++j) {
+                                vec3 * cv = &(*v)[((*f)[i].v[j] - 1)];
+                                vec3 * ct = &(*t)[((*f)[i].t[j] - 1)];
+                                vec3 * cn = &(*n)[((*f)[i].n[j] - 1)];
+                                glTexCoord2f(ct->x, ct->y);
+                                glNormal3f(cn->x, cn->y, cn->z);
+                                glVertex3f(cv->x, cv->y, cv->z);
+                        }
+                }*/
+				for (size_t i = 0; i < shapes.size(); i++) {
+				  for (size_t v = 0; v < shapes[i].mesh.positions.size() / 3; v++) {
+					  //glTexCoord2f(ct->x, ct->y);
+                      //glNormal3f(cn->x, cn->y, cn->z);
+                      glVertex3f(shapes[i].mesh.positions[3*v+0], shapes[i].mesh.positions[3*v+1], shapes[i].mesh.positions[3*v+2]);
+				  }
+				}
+                glEnd();
+        glEndList();
+ 
+        delete v;
+        delete n;
+        delete t;
+        //delete f;
+ 
+        return dlId;
+ 
+}
+ 
+// Wywo³anie tak utworzonej display listy w celu jej narysowania:
+// glCallList(id_zwrocone_przez_LoadObj);
 
 // Funkcja odczytuj¹ca bitmapê i tworz¹ca na jej podstawie teksturê z zadanym rodzajem filtracji
 GLuint LoadTexture(char * file, int magFilter, int minFilter) {
@@ -114,7 +227,9 @@ int main(int argc, char* argv[])
 	mouseY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	glutSetCursor(GLUT_CURSOR_NONE);
 
+
 	LoadTextures(); // Ka¿d¹ teksturê ³adujemy *raz* (nie w ka¿dej klatce!), np. przed wejœciem do pêtli g³ównej
+	boy = LoadObj("Resources\\boy.obj");
 
 	glutMainLoop();
 
@@ -265,6 +380,8 @@ void OnRender() {
 		glLightfv(GL_LIGHT0, GL_POSITION, l0_pos);
 
 	#pragma endregion
+
+	glCallList(boy);
 
 	#pragma region Rysowanie scian
 
