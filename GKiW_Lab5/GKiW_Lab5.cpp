@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "tiny_obj_loader.h"
 #include <vector>
 
 #pragma region Zmienne globalne
@@ -32,8 +31,7 @@ struct SFace {
 };
  
 GLuint LoadObj(char * file) {
- 
-        /*FILE * fp = fopen(file, "r");
+        FILE * fp = fopen(file, "r");
  
         if (fp == NULL) {
                 printf("ERROR: Cannot read model file \"%s\".\n", file);
@@ -74,36 +72,13 @@ GLuint LoadObj(char * file) {
                 }
         }
  
-        fclose(fp);*/
-
-		std::vector<vec3> * v = new std::vector<vec3>();
-        std::vector<vec3> * n = new std::vector<vec3>();
-        std::vector<vec3> * t = new std::vector<vec3>();
-        //std::vector<SFace> * f = new std::vector<SFace>();
-
-		std::vector<tinyobj::shape_t> shapes;
-		std::vector<tinyobj::material_t> materials;
-		std::string err;
-		bool ret = tinyobj::LoadObj(shapes, materials, err, file);
-		
-		if (!err.empty()) { // `err` may contain warning message.
-		  std::cerr << err << std::endl;
-		}
-
-		for (size_t i = 0; i < shapes.size(); i++) {
-		  for (size_t v = 0; v < shapes[i].mesh.positions.size() / 3; v++) {
-			printf("  v[%ld] = (%f, %f, %f)\n", v,
-			  shapes[i].mesh.positions[3*v+0],
-			  shapes[i].mesh.positions[3*v+1],
-			  shapes[i].mesh.positions[3*v+2]);
-		  }
-		}
+        fclose(fp);
  
         GLuint dlId;
         dlId = glGenLists(1);
         glNewList(dlId, GL_COMPILE);
                 glBegin(GL_TRIANGLES);
-                /*for (int i = 0; i < f->size(); ++i) {
+                for (int i = 0; i < f->size(); ++i) {
                         for (int j = 0; j < 3; ++j) {
                                 vec3 * cv = &(*v)[((*f)[i].v[j] - 1)];
                                 vec3 * ct = &(*t)[((*f)[i].t[j] - 1)];
@@ -112,21 +87,14 @@ GLuint LoadObj(char * file) {
                                 glNormal3f(cn->x, cn->y, cn->z);
                                 glVertex3f(cv->x, cv->y, cv->z);
                         }
-                }*/
-				for (size_t i = 0; i < shapes.size(); i++) {
-				  for (size_t v = 0; v < shapes[i].mesh.positions.size() / 3; v++) {
-					  //glTexCoord2f(ct->x, ct->y);
-                      //glNormal3f(cn->x, cn->y, cn->z);
-                      glVertex3f(shapes[i].mesh.positions[3*v+0], shapes[i].mesh.positions[3*v+1], shapes[i].mesh.positions[3*v+2]);
-				  }
-				}
+                }
                 glEnd();
         glEndList();
  
         delete v;
         delete n;
         delete t;
-        //delete f;
+        delete f;
  
         return dlId;
  
