@@ -1,0 +1,9 @@
+ipch
+*.sdf
+*.opensdf
+*.user
+*.suo
+Debug
+Release
+GKiW_Lab5/Debug
+GKiW_Lab5/Release
