@@ -154,9 +154,9 @@ GLuint LoadTexture(char * file, int magFilter, int minFilter) {
 // Funkcja, która odpowiada za za³adowanie tekstur
 void LoadTextures() {
 	texCheckboard_nearest = LoadTexture("Resources\\tex\\Mat_Color.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
-	texCheckboard_linear = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR);
+	/*texCheckboard_linear = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR);
 	texCheckboard_linear_mm = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_NEAREST);
-	texCheckboard_linear_mm_linear = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+	texCheckboard_linear_mm_linear = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);*/
 }
 
 int main(int argc, char* argv[])
