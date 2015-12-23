@@ -25,12 +25,13 @@ GLuint texCheckboard_linear_mm_linear;
 #pragma endregion
 
 struct SFace {
-        int v[3];
-        int n[3];
-        int t[3];
+        int v[4];
+        int n[4];
+        int t[4];
 };
  
 GLuint LoadObj(char * file) {
+ 
         FILE * fp = fopen(file, "r");
  
         if (fp == NULL) {
@@ -77,18 +78,27 @@ GLuint LoadObj(char * file) {
         GLuint dlId;
         dlId = glGenLists(1);
         glNewList(dlId, GL_COMPILE);
+				glEnable(GL_TEXTURE_2D);
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+				glBindTexture(GL_TEXTURE_2D, texCheckboard_nearest);
                 glBegin(GL_TRIANGLES);
                 for (int i = 0; i < f->size(); ++i) {
                         for (int j = 0; j < 3; ++j) {
-                                vec3 * cv = &(*v)[((*f)[i].v[j] - 1)];
-                                vec3 * ct = &(*t)[((*f)[i].t[j] - 1)];
-                                vec3 * cn = &(*n)[((*f)[i].n[j] - 1)];
-                                glTexCoord2f(ct->x, ct->y);
-                                glNormal3f(cn->x, cn->y, cn->z);
-                                glVertex3f(cv->x, cv->y, cv->z);
+								try {
+									vec3 * cv = &(*v).at(((*f)[i].v[j] - 1));
+									vec3 * ct = &(*t).at(((*f)[i].t[j] - 1));
+									vec3 * cn = &(*n).at(((*f)[i].n[j] - 1));
+
+									glVertex3f(cv->x, cv->y, cv->z);
+									glTexCoord2f(ct->x, ct->y);
+									glNormal3f(cn->x, cn->y, cn->z);
+								} catch (const std::out_of_range& oor){ 
+									printf(".");
+								}
                         }
                 }
                 glEnd();
+				glDisable(GL_TEXTURE_2D);
         glEndList();
  
         delete v;
@@ -143,7 +153,7 @@ GLuint LoadTexture(char * file, int magFilter, int minFilter) {
 
 // Funkcja, która odpowiada za za³adowanie tekstur
 void LoadTextures() {
-	texCheckboard_nearest = LoadTexture("Resources\\checkboard.bmp", GL_NEAREST, GL_NEAREST);
+	texCheckboard_nearest = LoadTexture("Resources\\tex\\Mat_Color.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
 	texCheckboard_linear = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR);
 	texCheckboard_linear_mm = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_NEAREST);
 	texCheckboard_linear_mm_linear = LoadTexture("Resources\\checkboard.bmp", GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
@@ -197,7 +207,7 @@ int main(int argc, char* argv[])
 
 
 	LoadTextures(); // Ka¿d¹ teksturê ³adujemy *raz* (nie w ka¿dej klatce!), np. przed wejœciem do pêtli g³ównej
-	boy = LoadObj("Resources\\boy.obj");
+	boy = LoadObj("Resources\\penguin_triangles.obj");
 
 	glutMainLoop();
 
@@ -349,586 +359,8 @@ void OnRender() {
 
 	#pragma endregion
 
+	glBindTexture(GL_TEXTURE_2D, texCheckboard_nearest);
 	glCallList(boy);
-
-	#pragma region Rysowanie scian
-
-		glBegin(GL_QUADS);
-
-			#pragma region Przednia sciana
-			{
-				float m_amb[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-			
-				glNormal3f( 0.0f,  0.0f,  1.0f);
-				glVertex3f(-5.0f,  5.0f, -5.0f);
-
-				glNormal3f( 0.0f,  0.0f,  1.0f);
-				glVertex3f(-5.0f,  0.0f, -5.0f);
-
-				glNormal3f( 0.0f,  0.0f,  1.0f);
-				glVertex3f( 5.0f,  0.0f, -5.0f);
-
-				glNormal3f( 0.0f,  0.0f,  1.0f);
-				glVertex3f( 5.0f,  5.0f, -5.0f);
-			}
-			#pragma endregion
-
-			#pragma region Lewa sciana
-			{
-				float m_amb[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-				float m_dif[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-				float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-			
-				glNormal3f( 1.0f,  0.0f,  0.0f);
-				glVertex3f(-5.0f,  0.0f, -5.0f);
-
-				glNormal3f( 1.0f,  0.0f,  0.0f);
-				glVertex3f(-5.0f,  5.0f, -5.0f);
-
-				glNormal3f( 1.0f,  0.0f,  0.0f);
-				glVertex3f(-5.0f,  5.0f,  5.0f);
-
-				glNormal3f( 1.0f,  0.0f,  0.0f);
-				glVertex3f(-5.0f,  0.0f,  5.0f);
-			}
-			#pragma endregion
-
-			#pragma region Prawa sciana
-			{
-				float m_amb[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-				float m_dif[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-				float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-			
-				glNormal3f(-1.0f,  0.0f,  0.0f);
-				glVertex3f( 5.0f,  5.0f, -5.0f);
-		
-				glNormal3f(-1.0f,  0.0f,  0.0f);
-				glVertex3f( 5.0f,  0.0f, -5.0f);
-
-				glNormal3f(-1.0f,  0.0f,  0.0f);
-				glVertex3f( 5.0f,  0.0f,  5.0f);
-
-				glNormal3f(-1.0f,  0.0f,  0.0f);
-				glVertex3f( 5.0f,  5.0f,  5.0f);
-			}
-			#pragma endregion
-
-			#pragma region Tylna sciana
-			{
-				float m_amb[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-			
-				glNormal3f( 0.0f,  0.0f, -1.0f);
-				glVertex3f(-5.0f,  0.0f,  5.0f);
-
-				glNormal3f( 0.0f,  0.0f, -1.0f);
-				glVertex3f(-5.0f,  5.0f,  5.0f);
-
-				glNormal3f( 0.0f,  0.0f, -1.0f);
-				glVertex3f( 5.0f,  5.0f,  5.0f);
-
-				glNormal3f( 0.0f,  0.0f, -1.0f);
-				glVertex3f( 5.0f,  0.0f,  5.0f);
-			}
-			#pragma endregion
-
-			#pragma region Podloga
-			{
-				float m_amb[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-			
-				glNormal3f( 0.0f,  1.0f,  0.0f);
-				glVertex3f(-5.0f,  0.0f, -5.0f);
-
-				glNormal3f( 0.0f,  1.0f,  0.0f);
-				glVertex3f(-5.0f,  0.0f,  5.0f);
-
-				glNormal3f( 0.0f,  1.0f,  0.0f);
-				glVertex3f( 5.0f,  0.0f,  5.0f);
-
-				glNormal3f( 0.0f,  1.0f,  0.0f);
-				glVertex3f( 5.0f,  0.0f, -5.0f);
-			}
-			#pragma endregion
-
-			#pragma region Sufit
-			{
-				float m_amb[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-			
-				glNormal3f( 0.0f, -1.0f,  0.0f);
-				glVertex3f(-5.0f,  5.0f,  5.0f);
-
-				glNormal3f( 0.0f, -1.0f,  0.0f);
-				glVertex3f(-5.0f,  5.0f, -5.0f);
-
-				glNormal3f( 0.0f, -1.0f,  0.0f);
-				glVertex3f( 5.0f,  5.0f, -5.0f);
-
-				glNormal3f( 0.0f, -1.0f,  0.0f);
-				glVertex3f( 5.0f,  5.0f,  5.0f);
-			}
-			#pragma endregion
-
-		glEnd();
-
-	#pragma endregion
-	
-	#pragma region Rysowanie oteksturowanych quadów
-
-		// W³¹czamy teksturowanie
-		glEnable(GL_TEXTURE_2D);
-
-		// Ustawienie sposobu teksturowania - GL_MODULATE sprawia, ¿e œwiat³o ma wp³yw na teksturê; GL_DECAL i GL_REPLACE rysuj¹ teksturê tak jak jest
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-		// Ustawienie materia³u
-		float m_amb[] = { 0.7f, 0.7f, 0.7f, 1.0f };
-		float m_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float m_spe[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		glMaterialfv(GL_FRONT, GL_AMBIENT, m_amb);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_dif);
-		glMaterialfv(GL_FRONT, GL_SPECULAR, m_spe);
-
-		// K¹t obrotu quadów
-		float rot = T / 50.0f;
-		//float rot = 0.0f;
-
-		#pragma region nearest
-	
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_nearest);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(-4.5f, 2.0f, 3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-
-		#pragma region linear
-	
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_linear);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(-1.5f, 2.0f, 3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-	
-		#pragma region linear_mm
-
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_linear_mm);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(1.5f, 2.0f, 3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-	
-		#pragma region linear_mm_linear
-
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_linear_mm_linear);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(4.5f, 2.0f, 3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  1.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 1.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-	
-		#pragma region nearest x10
-	
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_nearest);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(-4.5f, 2.0f, -3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-	
-		#pragma region linear x10
-	
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_linear);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(-1.5f, 2.0f, -3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-	
-		#pragma endregion
-
-		#pragma region linear_mm x10
-
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_linear_mm);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(1.5f, 2.0f, -3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-
-		#pragma region linear_mm_linear x10
-
-			// Wybór tekstury korzystaj¹c z jej id
-			glBindTexture(GL_TEXTURE_2D, texCheckboard_linear_mm_linear);
-
-			glPushMatrix();
-				glScalef(.5f, .5f, .5f);
-				glTranslatef(4.5f, 2.0f, -3.0f);
-				glRotatef(rot, 0.0f, 1.0f, 0.0f);
-		
-				glBegin(GL_QUADS);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f,  1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-			
-					glTexCoord2f( 0.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f, -1.0f,  0.0f);
-			
-					glTexCoord2f( 0.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f(-1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f, 10.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f,  1.0f,  0.0f);
-			
-					glTexCoord2f(10.0f,  0.0f);
-					glNormal3f( 0.0f,  0.0f, -1.0f);
-					glVertex3f( 1.0f, -1.0f,  0.0f);
-
-				glEnd();
-
-			glPopMatrix();
-
-		#pragma endregion
-
-		// Wy³¹czenie teksturowania - geometria renderowana od tego miejsca nie bêdzie ju¿ oteksturowana
-		glDisable(GL_TEXTURE_2D);
-
-	#pragma endregion
 
 	glutSwapBuffers();
 	glFlush();
