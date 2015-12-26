@@ -3,6 +3,8 @@
 #include "ObjLoader.h"
 #include "Texture.h"
 #include "Item.h"
+#include "ClosedState.h"
+#include "OpenedState.h"
 
 #pragma region Zmienne globalne
 
@@ -75,10 +77,10 @@ int main(int argc, char* argv[])
 	mouseY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	glutSetCursor(GLUT_CURSOR_NONE);
 
-
 	LoadTextures();
 	GLuint tex = LoadObj("Resources\\penguin_triangles.obj", texId);
 
+	State* clsState = new ClosedState;
 	vec3 pos = {2.0f, 0.0f, 0.0f};
 	Item* item = new Item(tex, pos);
 	items.push_back(item);
@@ -110,6 +112,8 @@ int main(int argc, char* argv[])
 	vec3 pos8 = {-2.0f, 0.0f, 4.0f};
 	Item* item8 = new Item(tex, pos8);
 	items.push_back(item8);
+
+	items[3]->changeState(new OpenedState());
 
 	glutMainLoop();
 	return 0;
@@ -267,8 +271,8 @@ void OnRender() {
 
 	glDisable(GL_LIGHT0);
 	glPushMatrix();
-		glScalef(10.0, 0.3f, 10.0f);
-		glTranslatef(0.0f, 1.3f, 0.0f);
+		glScalef(10.0, 1.0f, 10.0f);
+		glTranslatef(0.0f, 0.0f, 0.0f);
 		glutSolidCube(1.0f);
 	glPopMatrix();
 	glEnable(GL_LIGHT0);

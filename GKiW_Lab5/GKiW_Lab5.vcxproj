@@ -85,18 +85,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd_party\bitmap\Bitmap.h" />
+    <ClInclude Include="ClosedState.h" />
     <ClInclude Include="GKiW_Lab5.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ObjLoader.h" />
+    <ClInclude Include="OpenedState.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rd_party\bitmap\Bitmap.cpp" />
+    <ClCompile Include="ClosedState.cpp" />
     <ClCompile Include="GKiW_Lab5.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
+    <ClCompile Include="OpenedState.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
