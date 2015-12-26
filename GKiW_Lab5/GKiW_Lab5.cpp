@@ -230,7 +230,7 @@ void OnTimer(int id) {
 	player.velM /= 1.2;
 	player.velS /= 1.2;
 
-	printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
+	//printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
 
 	#pragma endregion
 }
@@ -264,6 +264,14 @@ void OnRender() {
 	{
 		items[i]->onRender();
 	}
+
+	glDisable(GL_LIGHT0);
+	glPushMatrix();
+		glScalef(10.0, 0.3f, 10.0f);
+		glTranslatef(0.0f, 1.3f, 0.0f);
+		glutSolidCube(1.0f);
+	glPopMatrix();
+	glEnable(GL_LIGHT0);
 
 	glutSwapBuffers();
 	glFlush();
