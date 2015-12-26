@@ -2,6 +2,7 @@
 #include <vector>
 #include "ObjLoader.h"
 #include "Texture.h"
+#include "Item.h"
 
 #pragma region Zmienne globalne
 
@@ -11,13 +12,14 @@ double T = 0.0;
 
 int mouseX = 0;
 int mouseY = 0;
-GLuint boy;
+
 
 bool captureMouse = true;
-bool free3DMovement = false;
+bool free3DMovement = true;
 
 float mouseSensitivity = .15f;
 
+vector<Item*> items;
 GLuint texId;
 
 #pragma endregion
@@ -58,13 +60,13 @@ int main(int argc, char* argv[])
 	float gl_amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gl_amb);
 
-	player.pos.x = 0.0f;
-	player.pos.y = 1.0f;
-	player.pos.z = 4.0f;
+	player.pos.x = 0.081256f;
+	player.pos.y = 3.542898f;
+	player.pos.z = 8.002872f;
 
-	player.dir.x = 0.0f;
-	player.dir.y = 0.0f;
-	player.dir.z = -1.0f;
+	player.dir.x = -0.011955f;
+	player.dir.y = -0.464438f;
+	player.dir.z = -0.885525f;
 
 	player.speed = .4f;
 
@@ -75,10 +77,41 @@ int main(int argc, char* argv[])
 
 
 	LoadTextures();
-	boy = LoadObj("Resources\\penguin_triangles.obj", texId);
+	GLuint tex = LoadObj("Resources\\penguin_triangles.obj", texId);
+
+	vec3 pos = {2.0f, 0.0f, 0.0f};
+	Item* item = new Item(tex, pos);
+	items.push_back(item);
+
+	vec3 pos2 = {0.0f, 0.0f, 0.0f};
+	Item* item2 = new Item(tex, pos2);
+	items.push_back(item2);
+
+	vec3 pos3 = {-2.0f, 0.0f, 0.0f};
+	Item* item3 = new Item(tex, pos3);
+	items.push_back(item3);
+
+	vec3 pos4 = {1.0f, 0.0f, 2.0f};
+	Item* item4 = new Item(tex, pos4);
+	items.push_back(item4);
+
+	vec3 pos5 = {-1.0f, 0.0f, 2.0f};
+	Item* item5 = new Item(tex, pos5);
+	items.push_back(item5);
+
+	vec3 pos6 = {2.0f, 0.0f, 4.0f};
+	Item* item6 = new Item(tex, pos6);
+	items.push_back(item6);
+
+	vec3 pos7 = {0.0f, 0.0f, 4.0f};
+	Item* item7 = new Item(tex, pos7);
+	items.push_back(item7);
+
+	vec3 pos8 = {-2.0f, 0.0f, 4.0f};
+	Item* item8 = new Item(tex, pos8);
+	items.push_back(item8);
 
 	glutMainLoop();
-
 	return 0;
 }
 
@@ -197,6 +230,8 @@ void OnTimer(int id) {
 	player.velM /= 1.2;
 	player.velS /= 1.2;
 
+	printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
+
 	#pragma endregion
 }
 
@@ -218,14 +253,17 @@ void OnRender() {
 		float l0_amb[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 		float l0_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		float l0_spe[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float l0_pos[] = { 1.0f, 5.0f, 4.0f, 1.0f };
+		float l0_pos[] = { 1.0f, 5.0f, 6.0f, 1.0f };
 		glLightfv(GL_LIGHT0, GL_AMBIENT, l0_amb);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, l0_dif);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, l0_spe);
 		glLightfv(GL_LIGHT0, GL_POSITION, l0_pos);
 	#pragma endregion
 
-	glCallList(boy);
+	for (size_t i = 0; i < items.size(); i++)
+	{
+		items[i]->onRender();
+	}
 
 	glutSwapBuffers();
 	glFlush();
