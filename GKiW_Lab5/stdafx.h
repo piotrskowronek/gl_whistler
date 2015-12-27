@@ -10,6 +10,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <GL/freeglut.h>
+#include <memory>
 
 
 

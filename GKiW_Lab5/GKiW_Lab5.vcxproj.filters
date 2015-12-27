@@ -45,6 +45,15 @@
     <ClInclude Include="OpenedState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpeningState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Modifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveYModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,6 +81,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OpenedState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpeningState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveYModifier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

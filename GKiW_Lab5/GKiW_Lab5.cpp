@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include <vector>
+#include <memory>
 #include "ObjLoader.h"
 #include "Texture.h"
 #include "Item.h"
 #include "ClosedState.h"
-#include "OpenedState.h"
+#include "OpeningState.h"
+
+using namespace std;
 
 #pragma region Zmienne globalne
 
@@ -15,6 +18,8 @@ double T = 0.0;
 int mouseX = 0;
 int mouseY = 0;
 
+int fps = 60;
+int frame = 0;
 
 bool captureMouse = true;
 bool free3DMovement = true;
@@ -80,7 +85,6 @@ int main(int argc, char* argv[])
 	LoadTextures();
 	GLuint tex = LoadObj("Resources\\penguin_triangles.obj", texId);
 
-	State* clsState = new ClosedState;
 	vec3 pos = {2.0f, 0.0f, 0.0f};
 	Item* item = new Item(tex, pos);
 	items.push_back(item);
@@ -113,7 +117,8 @@ int main(int argc, char* argv[])
 	Item* item8 = new Item(tex, pos8);
 	items.push_back(item8);
 
-	items[3]->changeState(new OpenedState());
+	shared_ptr<State> p(new OpeningState);
+	items[3]->changeState(p);
 
 	glutMainLoop();
 	return 0;
@@ -162,8 +167,7 @@ void OnMouseMove(int x, int y) {
 #pragma endregion
 
 void OnTimer(int id) {
-
-	glutTimerFunc(17, OnTimer, 0);
+	glutTimerFunc((int)(1000 / fps), OnTimer, 0);
 
 	#pragma region Ruch kamery
 
@@ -233,6 +237,11 @@ void OnTimer(int id) {
 	player.velRY /= 1.2;
 	player.velM /= 1.2;
 	player.velS /= 1.2;
+
+	for (size_t i = 0; i < items.size(); i++)
+	{
+		items[i]->onTimer(fps);
+	}
 
 	//printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
 

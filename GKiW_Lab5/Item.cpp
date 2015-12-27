@@ -5,7 +5,7 @@
 
 
 Item::Item(GLuint modelListId, vec3 pos)
-	: m_state(new ClosedState)
+	: m_state(shared_ptr<State>(new ClosedState))
 	, m_modelListId(modelListId)
 	, m_pos(pos)
 	, m_pos_offset()
@@ -21,9 +21,21 @@ void Item::onRender(){
 	glPopMatrix();
 }
 
-void Item::changeState(State* state)
+void Item::onTimer(int fps){
+	for (int i = 0; i < modifiers.size(); i++)
+	{
+		modifiers[i].perform
+	}
+}
+
+void Item::changeState(shared_ptr<State> state)
 {
 	m_state = state;
 	m_state->initialize(this);
 	m_state->onInit();
+}
+
+void Item::registerModifier(shared_ptr<Modifier> modifier)
+{
+	modifiers.push_back(modifier);
 }
