@@ -24,7 +24,7 @@ void Item::onRender(){
 void Item::onTimer(int fps){
 	for (int i = 0; i < modifiers.size(); i++)
 	{
-		modifiers[i].perform
+		//modifiers[i].perform
 	}
 }
 

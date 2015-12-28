@@ -5,7 +5,7 @@
 #include "Texture.h"
 #include "Item.h"
 #include "ClosedState.h"
-#include "OpeningState.h"
+#include "OpenedState.h"
 
 using namespace std;
 
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	LoadTextures();
-	GLuint tex = LoadObj("Resources\\penguin_triangles.obj", texId);
+	GLuint tex = LoadObj("martin_triangles", texId);
 
 	vec3 pos = {2.0f, 0.0f, 0.0f};
 	Item* item = new Item(tex, pos);
@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
 	Item* item8 = new Item(tex, pos8);
 	items.push_back(item8);
 
-	shared_ptr<State> p(new OpeningState);
+	shared_ptr<State> p(new OpenedState);
 	items[3]->changeState(p);
 
 	glutMainLoop();
