@@ -8,10 +8,10 @@ using namespace std;
 
 struct Material {
 	string name;
-	GLuint texture;
+	string texture;
 };
 
-GLuint LoadObj(string file, GLuint textureId) {
+GLuint LoadObj(string file) {
 	FILE * fp2;
 	errno_t error2;
 
@@ -32,19 +32,18 @@ GLuint LoadObj(string file, GLuint textureId) {
 			sscanf(buf2, "newmtl %s", &mtlName);
 			string str(mtlName);
 
-			Material mtl = {str, 0};
+			Material mtl = {str, ""};
 			vector<SFace> v;
 			pair< Material, vector< SFace > > p(mtl, v);
 			materials.push_back(p);
 		}
-		if (buf2[0] == 'm' && buf2[1] == 'a' && buf2[1] == 'p' && buf2[1] == '_' && buf2[1] == 'K' && buf2[1] == 'd') {
+		if (buf2[0] == 'm' && buf2[1] == 'a' && buf2[2] == 'p' && buf2[3] == '_' && buf2[4] == 'K' && buf2[5] == 'd') {
 			char texName[100];
 			sscanf(buf2, "map_Kd %s", &texName);
 			string str(texName);
-			string texPath("Resources\\tex\\" + str + ".bmp");
+			string texPath("Resources\\tex\\" + str);
 
-			CTexture tex(&texPath[0u]);
-			(*materials.end()).first.texture = tex.Load();
+			materials.back().first.texture = texPath;
 		}
 	}
 
@@ -107,17 +106,33 @@ GLuint LoadObj(string file, GLuint textureId) {
 
 	fclose(fp);
 
+	GLuint* textures = new GLuint[materials.size()];
+	glGenTextures(materials.size(), textures);
+	for (int i = 0; i < materials.size(); i++)
+	{
+		string str = materials[i].first.texture;
+		char* writable = new char[str.size() + 1];
+		copy(str.begin(), str.end(), writable);
+		writable[str.size()] = '\0';
+		CTexture tex(writable, textures[i]);
+		tex.Load();
+		delete[] writable;
+	}
+
 	GLuint dlId;
 	dlId = glGenLists(1);
 	glNewList(dlId, GL_COMPILE);
 
-	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBindTexture(GL_TEXTURE_2D, textureId);
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	glBegin(GL_TRIANGLES);
-	GLuint texId = 0;
-	for (int k = 0; k < materials.size(); k++)
+	glEnable(GL_TEXTURE_2D);
+	
+	for (int k = 0; k < materials.size(); k++){
+		GLuint tx = textures[k]; 
+		
+		glBindTexture(GL_TEXTURE_2D, tx);
+		
+		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < materials[k].second.size(); i++)
 			for (int j = 0; j < 3; j++) {
 				vec3 * cv = &(*v)[(materials[k].second[i].v[j] - 1)];
@@ -127,12 +142,16 @@ GLuint LoadObj(string file, GLuint textureId) {
 				glNormal3f(cn->x, cn->y, cn->z);
 				glVertex3f(cv->x, cv->y, cv->z);
 			}
-	glEnd();
+		glEnd();
+		
+	}
+	
 
 	glDisable(GL_TEXTURE_2D);
 
 	glEndList();
 
+	delete textures;
 	delete v;
 	delete n;
 	delete t;

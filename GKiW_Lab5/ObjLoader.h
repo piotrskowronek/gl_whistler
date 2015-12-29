@@ -6,4 +6,4 @@ struct SFace {
         int t[3];
 };
 
-GLuint LoadObj(string file, GLuint textureId);
+GLuint LoadObj(string file);

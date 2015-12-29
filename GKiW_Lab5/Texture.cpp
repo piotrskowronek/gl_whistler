@@ -1,11 +1,13 @@
 #include "StdAfx.h"
 #include "Texture.h"
+#include <iostream>
 
+using namespace std;
 
-CTexture::CTexture(char * file)
+CTexture::CTexture(char * file, GLuint id)
 {
 	IsLoaded = false;
-	_id = -1;
+	_id = id;
 	_file = file;
 	_magFilter = GL_LINEAR;
 	_minFilter = GL_LINEAR;
@@ -28,7 +30,7 @@ bool CTexture::Load(void)
 		return false;
 	}
 
-	glGenTextures(1, &_id);
+	//glGenTextures(1, &_id);
 
 	glBindTexture(GL_TEXTURE_2D, _id);
 

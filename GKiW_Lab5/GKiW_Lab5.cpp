@@ -27,13 +27,16 @@ bool free3DMovement = true;
 float mouseSensitivity = .15f;
 
 vector<Item*> items;
-GLuint texId;
+GLuint texId, texId2;
 
 #pragma endregion
 
 void LoadTextures() {
+	/*CTexture tex2("Resources\\tex\\CHERRYWD-big.bmp");
+	texId2 = tex2.Load();
 	CTexture tex("Resources\\tex\\Mat_Color.bmp");
-	texId = tex.Load();
+	texId = tex.Load();*/
+	
 }
 
 int main(int argc, char* argv[])
@@ -83,7 +86,7 @@ int main(int argc, char* argv[])
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	LoadTextures();
-	GLuint tex = LoadObj("martin_triangles", texId);
+	GLuint tex = LoadObj("martin_triangles");
 
 	vec3 pos = {2.0f, 0.0f, 0.0f};
 	Item* item = new Item(tex, pos);
