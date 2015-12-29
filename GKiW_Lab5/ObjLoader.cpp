@@ -7,9 +7,8 @@
 using namespace std;
 
 struct Material {
-	GLuint ambient;
-	GLuint diffuse;
-	GLuint specular;
+	string name;
+	GLuint texture;
 };
 
 GLuint LoadObj(string file, GLuint textureId) {
@@ -23,8 +22,7 @@ GLuint LoadObj(string file, GLuint textureId) {
 		return -1;
 	}
 
-	map<string, Material> materials;
-	string lastMaterialId = "";
+	vector< pair< Material, vector < SFace > > > materials;
 
 	char buf2[128];
 
@@ -34,9 +32,10 @@ GLuint LoadObj(string file, GLuint textureId) {
 			sscanf(buf2, "newmtl %s", &mtlName);
 			string str(mtlName);
 
-			lastMaterialId = str;
-			Material mtl = {0, 0, 0};
-			materials[str] = mtl;
+			Material mtl = {str, 0};
+			vector<SFace> v;
+			pair< Material, vector< SFace > > p(mtl, v);
+			materials.push_back(p);
 		}
 		if (buf2[0] == 'm' && buf2[1] == 'a' && buf2[1] == 'p' && buf2[1] == '_' && buf2[1] == 'K' && buf2[1] == 'd') {
 			char texName[100];
@@ -45,7 +44,7 @@ GLuint LoadObj(string file, GLuint textureId) {
 			string texPath("Resources\\tex\\" + str + ".bmp");
 
 			CTexture tex(&texPath[0u]);
-			materials[lastMaterialId].diffuse = tex.Load();
+			(*materials.end()).first.texture = tex.Load();
 		}
 	}
 
@@ -65,11 +64,10 @@ GLuint LoadObj(string file, GLuint textureId) {
 	vector<vec3> * n = new vector<vec3>();
 	vector<vec3> * t = new vector<vec3>();
 	vector<SFace> * f = new vector<SFace>();
-	vector< pair< int, string > > pairsPosMaterial;
 
 	char buf[128];
 
-	int fsOccured = 0;
+	pair< Material, vector< SFace > >* currentPair;
 
 	while (fgets(buf, 128, fp) != NULL) {
 		if (buf[0] == 'v' && buf[1] == ' ') {
@@ -94,16 +92,16 @@ GLuint LoadObj(string file, GLuint textureId) {
 				&face->v[1], &face->t[1], &face->n[1],
 				&face->v[2], &face->t[2], &face->n[2]
 				);
-			f->push_back(*face);
-			fsOccured++;
+			currentPair->second.push_back(*face);
 		}
 		if (buf[0] == 'u' && buf[1] == 's') {
 			char mtlName[50];
 			sscanf(buf, "usemtl %s", &mtlName);
 			string str(mtlName);
 
-			pair< int, string > p(fsOccured, str);
-			pairsPosMaterial.push_back(p);
+			for (int i = 0; i < materials.size(); i++)
+				if ( materials[i].first.name == str )
+					currentPair = &materials[i];
 		}
 	}
 
@@ -115,26 +113,20 @@ GLuint LoadObj(string file, GLuint textureId) {
 
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 
 	glBegin(GL_TRIANGLES);
-	GLuint texId = materials[pairsPosMaterial[0].second].diffuse;
-	for (int i = 0; i < f->size(); ++i) {
-		for (int k = 0; k < pairsPosMaterial.size(); k++)
-		{
-			if ( pairsPosMaterial[k].first > i )
-				texId = materials[pairsPosMaterial[k].second].diffuse;
-		}
-
-		glBindTexture(GL_TEXTURE_2D, texId);
-		for (int j = 0; j < 3; ++j) {
-			vec3 * cv = &(*v)[((*f)[i].v[j] - 1)];
-			vec3 * ct = &(*t)[((*f)[i].t[j] - 1)];
-			vec3 * cn = &(*n)[((*f)[i].n[j] - 1)];
-			glTexCoord2f(ct->x, ct->y);
-			glNormal3f(cn->x, cn->y, cn->z);
-			glVertex3f(cv->x, cv->y, cv->z);
-		}
-	}
+	GLuint texId = 0;
+	for (int k = 0; k < materials.size(); k++)
+		for (int i = 0; i < materials[k].second.size(); i++)
+			for (int j = 0; j < 3; j++) {
+				vec3 * cv = &(*v)[(materials[k].second[i].v[j] - 1)];
+				vec3 * ct = &(*t)[(materials[k].second[i].t[j] - 1)];
+				vec3 * cn = &(*n)[(materials[k].second[i].n[j] - 1)];
+				glTexCoord2f(ct->x, ct->y);
+				glNormal3f(cn->x, cn->y, cn->z);
+				glVertex3f(cv->x, cv->y, cv->z);
+			}
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
