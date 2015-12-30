@@ -31,14 +31,6 @@ GLuint texId, texId2;
 
 #pragma endregion
 
-void LoadTextures() {
-	/*CTexture tex2("Resources\\tex\\CHERRYWD-big.bmp");
-	texId2 = tex2.Load();
-	CTexture tex("Resources\\tex\\Mat_Color.bmp");
-	texId = tex.Load();*/
-	
-}
-
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -85,40 +77,26 @@ int main(int argc, char* argv[])
 	mouseY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	glutSetCursor(GLUT_CURSOR_NONE);
 
-	LoadTextures();
-	GLuint tex = LoadObj("martin_triangles");
+	GLuint tex = LoadObj("mario");
+	GLuint tex2 = LoadObj("pipe");
 
-	vec3 pos = {2.0f, 0.0f, 0.0f};
-	Item* item = new Item(tex, pos);
-	items.push_back(item);
+	vector< vec3 > its;
+	its.push_back(vec3(3.0f, 0.0f, 0.0f));
+	its.push_back(vec3(0.0f, 0.0f, 0.0f));
+	its.push_back(vec3(-3.0f, 0.0f, 0.0f));
+	its.push_back(vec3(1.5f, 0.0f, 2.0f));
+	its.push_back(vec3(-1.5f, 0.0f, 2.0f));
+	its.push_back(vec3(3.0f, 0.0f, 4.0f));
+	its.push_back(vec3(0.0f, 0.0f, 4.0f));
+	its.push_back(vec3(-3.0f, 0.0f, 4.0f));
 
-	vec3 pos2 = {0.0f, 0.0f, 0.0f};
-	Item* item2 = new Item(tex, pos2);
-	items.push_back(item2);
-
-	vec3 pos3 = {-2.0f, 0.0f, 0.0f};
-	Item* item3 = new Item(tex, pos3);
-	items.push_back(item3);
-
-	vec3 pos4 = {1.0f, 0.0f, 2.0f};
-	Item* item4 = new Item(tex, pos4);
-	items.push_back(item4);
-
-	vec3 pos5 = {-1.0f, 0.0f, 2.0f};
-	Item* item5 = new Item(tex, pos5);
-	items.push_back(item5);
-
-	vec3 pos6 = {2.0f, 0.0f, 4.0f};
-	Item* item6 = new Item(tex, pos6);
-	items.push_back(item6);
-
-	vec3 pos7 = {0.0f, 0.0f, 4.0f};
-	Item* item7 = new Item(tex, pos7);
-	items.push_back(item7);
-
-	vec3 pos8 = {-2.0f, 0.0f, 4.0f};
-	Item* item8 = new Item(tex, pos8);
-	items.push_back(item8);
+	for (int i = 0; i < its.size(); i++)
+	{
+		Item* item = new Item(tex, its[i]);
+		items.push_back(item);
+		Item* item2 = new Item(tex2, its[i]);
+		items.push_back(item2);
+	}
 
 	shared_ptr<State> p(new OpenedState);
 	items[3]->changeState(p);
@@ -281,13 +259,13 @@ void OnRender() {
 		items[i]->onRender();
 	}
 
-	glDisable(GL_LIGHT0);
+	/*glDisable(GL_LIGHT0);
 	glPushMatrix();
 		glScalef(10.0, 1.0f, 10.0f);
 		glTranslatef(0.0f, 0.0f, 0.0f);
 		glutSolidCube(1.0f);
 	glPopMatrix();
-	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT0);*/
 
 	glutSwapBuffers();
 	glFlush();

@@ -123,7 +123,7 @@ GLuint LoadObj(string file) {
 	dlId = glGenLists(1);
 	glNewList(dlId, GL_COMPILE);
 
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glEnable(GL_TEXTURE_2D);
 	

@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "Item.h"
 #include "State.h"
-#include "ClosedState.h"
+#include "OpenedState.h"
 
 
 Item::Item(GLuint modelListId, vec3 pos)
-	: m_state(shared_ptr<State>(new ClosedState))
+	: m_state(shared_ptr<State>(new OpenedState))
 	, m_modelListId(modelListId)
 	, m_pos(pos)
-	, m_pos_offset()
+	, m_pos_offset(vec3(0.0f, 0.0f, 0.0f))
 {
 	m_state->initialize(this);
 	m_state->onInit();
