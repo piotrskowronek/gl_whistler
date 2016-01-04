@@ -52,6 +52,21 @@ void Scene::onInit(){
 		(*get<0>(*tpl))[3]->changeState(p);
 	}, ctx));
 	items[3]->registerModifier(th);
+
+	void* ctx2 = new tuple< vector<Item*>* >(&items);
+	shared_ptr<TimerHandler> th2(new TimerHandler(0.2f, false, [](void* context)->void{
+		tuple< vector<Item*>* >* tpl = reinterpret_cast< tuple< vector<Item*>* >* >(context);
+
+		shared_ptr<Modifier> the(new MoveYModifier(0.3f, -1.3f, 0.0f, (*get<0>(*tpl))[2], [](void* cont)->void{
+			tuple< vector<Item*>* >* tpl = reinterpret_cast< tuple< vector<Item*>* >* >(cont);
+
+			shared_ptr<State> p(new OpenedState);
+			(*get<0>(*tpl))[2]->changeState(p);
+		}, tpl));
+
+		(*get<0>(*tpl))[2]->registerModifier(the);
+	}, ctx2));
+	registerUpdateHandler(th2);
 }
 
 void Scene::onTimer(){

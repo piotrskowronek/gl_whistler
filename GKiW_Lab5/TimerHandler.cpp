@@ -13,7 +13,7 @@ TimerHandler::TimerHandler(float duration, bool repeat, TH_CALLBACK, void* conte
 }
 
 TimerHandler::~TimerHandler(){
-	delete m_context;
+	//delete m_context;
 }
 
 void TimerHandler::windUpClock(){
