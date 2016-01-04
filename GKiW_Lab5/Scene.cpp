@@ -11,15 +11,10 @@
 #include "TimerHandler.h"
 #include "SceneObject.h"
 #include "Pipe.h"
+#include "MoveYModifier.h"
 
 using namespace std;
 
-void callback(void* context){
-	tuple< vector<Item*>* >* tpl = reinterpret_cast< tuple< vector<Item*>* >* >(context);
-
-	shared_ptr<State> p(new OpenedState);
-	(*get<0>(*tpl))[3]->changeState(p);
-}
 
 void Scene::onInit(){
 	GLuint tex = LoadObj("mario");
@@ -50,8 +45,13 @@ void Scene::onInit(){
 	}
 
 	void* ctx = new tuple< vector<Item*>* >(&items);
-	shared_ptr<TimerHandler> th(new TimerHandler(1.0f, false, callback, ctx));
-	registerUpdateHandler(th);
+	shared_ptr<Modifier> th(new MoveYModifier(0.3f, -1.3f, 0.0f, items[3], [](void* context)->void{
+		tuple< vector<Item*>* >* tpl = reinterpret_cast< tuple< vector<Item*>* >* >(context);
+
+		shared_ptr<State> p(new OpenedState);
+		(*get<0>(*tpl))[3]->changeState(p);
+	}, ctx));
+	items[3]->registerModifier(th);
 }
 
 void Scene::onTimer(){
@@ -68,8 +68,8 @@ void Scene::onTimer(){
 			it++;
 	}
 
-	for (size_t i = 0; i < items.size(); i++) {
-		items[i]->onTimer();
+	for (size_t i = 0; i < objects.size(); i++) {
+		objects[i]->onTimer();
 	}
 }
 

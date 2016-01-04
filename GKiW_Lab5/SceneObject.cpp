@@ -19,13 +19,22 @@ void SceneObject::onRender(){
 }
 
 void SceneObject::onTimer(){
-	for (int i = 0; i < modifiers.size(); i++)
-	{
-		//modifiers[i].perform
+	vector< shared_ptr< Modifier > >::iterator it;
+	for (it = modifiers.begin(); it != modifiers.end(); it++)
+		(*it)->onUpdate();
+
+	it = modifiers.begin();
+	while (it != modifiers.end()) {
+		bool terminated = (*it)->isTerminated();
+		if (terminated)
+			it = modifiers.erase(it);
+		else
+			it++;
 	}
 }
 
 void SceneObject::registerModifier(shared_ptr<Modifier> modifier)
 {
 	modifiers.push_back(modifier);
+	modifier->windUpClock();
 }

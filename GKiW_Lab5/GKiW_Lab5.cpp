@@ -15,7 +15,7 @@ double T = 0.0;
 int mouseX = 0;
 int mouseY = 0;
 
-int fps = 10;
+int fps = 120;
 clock_t begin = clock();
 
 bool captureMouse = true;

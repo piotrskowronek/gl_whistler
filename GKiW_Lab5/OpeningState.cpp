@@ -12,5 +12,5 @@ void OpeningState::onInit(){
 	}*/
 		
 	m_item->m_pos_offset.y = -1.3f;
-	m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(1.0f, -1.3f, 0.0f)));
+	//m_item->registerModifier(shared_ptr<Modifier>(new MoveModifier(1.0f, -1.3f, 0.0f)));
 }
