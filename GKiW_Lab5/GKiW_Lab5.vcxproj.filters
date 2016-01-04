@@ -13,6 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{03682921-f0eb-4b82-a0e1-028777482474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{26271bad-3190-425f-84ff-54af40694e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\States">
+      <UniqueIdentifier>{ef0bf3db-e42b-4279-b6c9-77c3bdd4cd82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\States">
+      <UniqueIdentifier>{1104edda-4aa2-43c0-81f7-4b3e77f44605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Modifiers">
+      <UniqueIdentifier>{52a532c8-8a5b-4196-a236-c5bad3ea2d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Modifiers">
+      <UniqueIdentifier>{fd36e55b-e436-47b4-a25a-823ec04cfa90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Items">
+      <UniqueIdentifier>{aae0709c-5fe7-4136-baad-c46fc7525833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Items">
+      <UniqueIdentifier>{98dbedfc-9c87-425c-841b-e2083fbe8c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sequences">
+      <UniqueIdentifier>{bf9d7cda-09d8-4bbf-8445-f176f575e2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sequences">
+      <UniqueIdentifier>{9120ee2b-be4b-463b-bcbc-588104291a53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -25,34 +55,55 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\3rd_party\bitmap\Bitmap.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="ObjLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="ClosedState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="OpenedState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="OpeningState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="Modifier.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Modifiers</Filter>
     </ClInclude>
     <ClInclude Include="MoveYModifier.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Header Files\Sequences</Filter>
+    </ClInclude>
+    <ClInclude Include="Level0.h">
+      <Filter>Header Files\Sequences</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerHandler.h">
+      <Filter>Header Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,35 +113,56 @@
     <ClCompile Include="GKiW_Lab5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObjLoader.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
     <ClCompile Include="..\3rd_party\bitmap\Bitmap.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ClosedState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="OpenedState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\States</Filter>
     </ClCompile>
     <ClCompile Include="OpeningState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\States</Filter>
     </ClCompile>
-    <ClCompile Include="Modifier.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ClosedState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\States</Filter>
     </ClCompile>
     <ClCompile Include="MoveYModifier.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Modifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Modifier.cpp">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source Files\Sequences</Filter>
+    </ClCompile>
+    <ClCompile Include="Level0.cpp">
+      <Filter>Source Files\Sequences</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerHandler.cpp">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
+      <Filter>Source Files\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

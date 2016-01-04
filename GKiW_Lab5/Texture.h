@@ -6,8 +6,8 @@ class CTexture
 public:
 	bool IsLoaded;
 
-	CTexture(char *, GLuint id);
-	CTexture(char *, int, int);
+	CTexture(char*, GLuint id);
+	CTexture(char*);
 	~CTexture(void);
 	bool Load(void);
 	GLuint GetId(void);

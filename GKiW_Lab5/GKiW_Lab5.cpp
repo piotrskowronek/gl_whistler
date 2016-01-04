@@ -1,11 +1,8 @@
 #include "stdafx.h"
 #include <vector>
 #include <memory>
-#include "ObjLoader.h"
-#include "Texture.h"
-#include "Item.h"
-#include "ClosedState.h"
-#include "OpenedState.h"
+#include <time.h>
+#include "Scene.h"
 
 using namespace std;
 
@@ -18,16 +15,15 @@ double T = 0.0;
 int mouseX = 0;
 int mouseY = 0;
 
-int fps = 60;
-int frame = 0;
+int fps = 10;
+clock_t begin = clock();
 
 bool captureMouse = true;
 bool free3DMovement = true;
 
-float mouseSensitivity = .15f;
+Scene* scene = new Scene;
 
-vector<Item*> items;
-GLuint texId, texId2;
+float mouseSensitivity = .15f;
 
 #pragma endregion
 
@@ -37,7 +33,8 @@ int main(int argc, char* argv[])
 
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(1280, 600);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutSetOption(GLUT_MULTISAMPLE, 8);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
 	glutCreateWindow("glWhistler");
 
@@ -77,29 +74,7 @@ int main(int argc, char* argv[])
 	mouseY = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	glutSetCursor(GLUT_CURSOR_NONE);
 
-	GLuint tex = LoadObj("mario");
-	GLuint tex2 = LoadObj("pipe");
-
-	vector< vec3 > its;
-	its.push_back(vec3(3.0f, 0.0f, 0.0f));
-	its.push_back(vec3(0.0f, 0.0f, 0.0f));
-	its.push_back(vec3(-3.0f, 0.0f, 0.0f));
-	its.push_back(vec3(1.5f, 0.0f, 2.0f));
-	its.push_back(vec3(-1.5f, 0.0f, 2.0f));
-	its.push_back(vec3(3.0f, 0.0f, 4.0f));
-	its.push_back(vec3(0.0f, 0.0f, 4.0f));
-	its.push_back(vec3(-3.0f, 0.0f, 4.0f));
-
-	for (int i = 0; i < its.size(); i++)
-	{
-		Item* item = new Item(tex, its[i]);
-		items.push_back(item);
-		Item* item2 = new Item(tex2, its[i]);
-		items.push_back(item2);
-	}
-
-	shared_ptr<State> p(new OpenedState);
-	items[3]->changeState(p);
+	scene->onInit();
 
 	glutMainLoop();
 	return 0;
@@ -219,13 +194,9 @@ void OnTimer(int id) {
 	player.velM /= 1.2;
 	player.velS /= 1.2;
 
-	for (size_t i = 0; i < items.size(); i++)
-	{
-		items[i]->onTimer(fps);
-	}
+	scene->onTimer();
 
 	//printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
-
 	#pragma endregion
 }
 
@@ -243,29 +214,7 @@ void OnRender() {
 		0.0f, 1.0f, 0.0f
 	);
 
-	#pragma region Swiatlo
-		float l0_amb[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-		float l0_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float l0_spe[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float l0_pos[] = { 1.0f, 5.0f, 6.0f, 1.0f };
-		glLightfv(GL_LIGHT0, GL_AMBIENT, l0_amb);
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, l0_dif);
-		glLightfv(GL_LIGHT0, GL_SPECULAR, l0_spe);
-		glLightfv(GL_LIGHT0, GL_POSITION, l0_pos);
-	#pragma endregion
-
-	for (size_t i = 0; i < items.size(); i++)
-	{
-		items[i]->onRender();
-	}
-
-	/*glDisable(GL_LIGHT0);
-	glPushMatrix();
-		glScalef(10.0, 1.0f, 10.0f);
-		glTranslatef(0.0f, 0.0f, 0.0f);
-		glutSolidCube(1.0f);
-	glPopMatrix();
-	glEnable(GL_LIGHT0);*/
+	scene->onRender();
 
 	glutSwapBuffers();
 	glFlush();

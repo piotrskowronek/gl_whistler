@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CTexture::CTexture(char * file, GLuint id)
+CTexture::CTexture(char* file, GLuint id)
 {
 	IsLoaded = false;
 	_id = id;
@@ -13,13 +13,13 @@ CTexture::CTexture(char * file, GLuint id)
 	_minFilter = GL_LINEAR;
 }
 
-CTexture::CTexture(char * file, int magFilter, int minFilter)
+CTexture::CTexture(char* file)
 {
 	IsLoaded = false;
 	_id = -1;
 	_file = file;
-	_magFilter = magFilter;
-	_minFilter = minFilter;
+	_magFilter = GL_LINEAR;
+	_minFilter = GL_LINEAR;
 }
 
 bool CTexture::Load(void)
@@ -30,7 +30,8 @@ bool CTexture::Load(void)
 		return false;
 	}
 
-	//glGenTextures(1, &_id);
+	if ( _id == -1 )
+		glGenTextures(1, &_id);
 
 	glBindTexture(GL_TEXTURE_2D, _id);
 
