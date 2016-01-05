@@ -59,13 +59,21 @@ int main(int argc, char* argv[])
 	float gl_amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gl_amb);
 
-	player.pos.x = 0.081256f;
+	/*player.pos.x = 0.081256f;
 	player.pos.y = 3.542898f;
 	player.pos.z = 8.002872f;
 
 	player.dir.x = -0.011955f;
 	player.dir.y = -0.464438f;
-	player.dir.z = -0.885525f;
+	player.dir.z = -0.885525f;*/
+	     
+	player.pos.x = -0.014905f;
+	player.pos.y = 2.358988f;
+	player.pos.z = 8.660418f;
+
+	player.dir.x = 0.000000f;
+	player.dir.y = -0.100331f;
+	player.dir.z = -0.994954f; 
 
 	player.speed = .4f;
 
@@ -196,7 +204,7 @@ void OnTimer(int id) {
 
 	scene->onTimer();
 
-	//printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
+	printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
 	#pragma endregion
 }
 

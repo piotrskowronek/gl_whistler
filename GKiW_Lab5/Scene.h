@@ -11,7 +11,7 @@ class Scene {
 protected:
 	vector<Item*> items;
 	vector<SceneObject*> objects;
-	GLuint texId;
+	GLuint texId, texId2;
 
 	vector< shared_ptr< TimerHandler > > handlers;
 public:

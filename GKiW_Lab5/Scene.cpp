@@ -19,8 +19,12 @@ using namespace std;
 void Scene::onInit(){
 	GLuint tex = LoadObj("mario");
 	GLuint tex2 = LoadObj("pipe");
+	GLuint tex3 = LoadObj("floor");
+	GLuint tex4 = LoadObj("arch");
 	CTexture tx("Resources\\tex\\grass.bmp", texId);
 	tx.Load();
+	CTexture tx2("Resources\\tex\\checkboard.bmp", texId2);
+	tx2.Load();
 
 	Terrain* terr = new Terrain();
 	//items.push_back(terr);
@@ -43,6 +47,18 @@ void Scene::onInit(){
 		SceneObject* item2 = new Pipe(tex2, its[i]);
 		objects.push_back(item2);
 	}
+
+	SceneObject* item2 = new Pipe(tex3, vec3(0.0f, -0.2f, 3.0f));
+	objects.push_back(item2);
+
+	SceneObject* item4 = new Pipe(tex3, vec3(0.0f, -0.2f, -6.0f));
+	objects.push_back(item4);
+
+	SceneObject* item5 = new Pipe(tex3, vec3(0.0f, -0.2f, -12.0f));
+	objects.push_back(item5);
+
+	SceneObject* item3 = new Pipe(tex4, vec3(-5.5f, -0.2f, -3.0f));
+	objects.push_back(item3);
 
 	void* ctx = new tuple< vector<Item*>* >(&items);
 	shared_ptr<Modifier> th(new MoveYModifier(0.3f, -1.3f, 0.0f, items[3], [](void* context)->void{
@@ -125,12 +141,26 @@ void Scene::onRender(){
 		objects[i]->onRender();
 	}
 
-	/*glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texId);
 	glPushMatrix();
-		glScalef(10.0, 0.3f, 10.0f);
-		glTranslatef(0.0f, 0.0f, 0.0f);
+		glDisable(GL_LIGHTING);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glScalef(10.0, 5.0f, 10.0f);
+		glTranslatef(0.0f, -0.55f, 0.0f);
 		glutSolidCube(1.0f);
+		glEnable(GL_LIGHTING);
 	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);*/
+
+	/*glPushMatrix();
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_GEN_S);	
+		glEnable(GL_TEXTURE_GEN_T);
+		glBindTexture(GL_TEXTURE_2D, texId2);
+		glScalef(10.0, 5.0f, 10.0f);
+		glTranslatef(1.0f, -0.55f, 0.0f);
+		glutSolidCube(1.0f);
+		glEnable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_GEN_S);
+		glDisable(GL_TEXTURE_GEN_T);
+	glPopMatrix();*/
 }
