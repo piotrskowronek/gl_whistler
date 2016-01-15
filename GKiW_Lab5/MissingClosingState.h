@@ -4,14 +4,15 @@
 #include "Chain.h"
 
 
-class OpeningState : public State
+class MissingClosingState : public State
 {
 public:
 	//outer
 	shared_ptr<State> m_nextState;
 	shared_ptr<Chain> m_chain;
 
-	OpeningState(shared_ptr<Chain>);
+	MissingClosingState(shared_ptr<Chain>);
+	MissingClosingState();
 	void changeStateOnEnd(shared_ptr<State> state);
 	void onInit();
 };

@@ -204,7 +204,7 @@ void OnTimer(int id) {
 
 	scene->onTimer();
 
-	printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
+	//printf("%f %f %f %f %f %f\n", player.pos.x, player.pos.y, player.pos.z, player.dir.x, player.dir.y, player.dir.z);
 	#pragma endregion
 }
 

@@ -12,4 +12,5 @@ protected:
 public:
 	Item(GLuint modelListId, vec3 pos);
 	void changeState(shared_ptr<State> state);
+	shared_ptr<State> getState();
 };

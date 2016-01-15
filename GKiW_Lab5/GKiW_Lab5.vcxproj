@@ -85,17 +85,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd_party\bitmap\Bitmap.h" />
+    <ClInclude Include="Chain.h" />
     <ClInclude Include="ClosedState.h" />
     <ClInclude Include="GKiW_Lab5.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Level0.h" />
+    <ClInclude Include="MissingClosingState.h" />
     <ClInclude Include="Modifier.h" />
     <ClInclude Include="MoveYModifier.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="OpenedState.h" />
     <ClInclude Include="OpeningState.h" />
-    <ClInclude Include="Pipe.h" />
+    <ClInclude Include="StaticSceneObject.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="State.h" />
@@ -107,17 +109,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rd_party\bitmap\Bitmap.cpp" />
+    <ClCompile Include="Chain.cpp" />
     <ClCompile Include="ClosedState.cpp" />
     <ClCompile Include="GKiW_Lab5.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Level0.cpp" />
+    <ClCompile Include="MissingClosingState.cpp" />
     <ClCompile Include="Modifier.cpp" />
     <ClCompile Include="MoveYModifier.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="OpenedState.cpp" />
     <ClCompile Include="OpeningState.cpp" />
-    <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="StaticSceneObject.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="State.cpp" />

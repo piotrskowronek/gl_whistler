@@ -7,11 +7,13 @@
 #include "Item.h"
 #include "ClosedState.h"
 #include "OpenedState.h"
+#include "OpeningState.h"
 #include "Terrain.h"
 #include "TimerHandler.h"
 #include "SceneObject.h"
-#include "Pipe.h"
+#include "StaticSceneObject.h"
 #include "MoveYModifier.h"
+#include "Chain.h"
 
 using namespace std;
 
@@ -44,23 +46,25 @@ void Scene::onInit(){
 		Item* item = new Item(tex, its[i]);
 		items.push_back(item);
 		objects.push_back(item);
-		SceneObject* item2 = new Pipe(tex2, its[i]);
+		SceneObject* item2 = new StaticSceneObject(tex2, its[i]);
 		objects.push_back(item2);
 	}
 
-	SceneObject* item2 = new Pipe(tex3, vec3(0.0f, -0.2f, 3.0f));
+	SceneObject* item2 = new StaticSceneObject(tex3, vec3(0.0f, -0.2f, 3.0f));
 	objects.push_back(item2);
 
-	SceneObject* item4 = new Pipe(tex3, vec3(0.0f, -0.2f, -6.0f));
+	SceneObject* item4 = new StaticSceneObject(tex3, vec3(0.0f, -0.2f, -6.0f));
 	objects.push_back(item4);
 
-	SceneObject* item5 = new Pipe(tex3, vec3(0.0f, -0.2f, -12.0f));
+	SceneObject* item5 = new StaticSceneObject(tex3, vec3(0.0f, -0.2f, -12.0f));
 	objects.push_back(item5);
 
-	SceneObject* item3 = new Pipe(tex4, vec3(-5.5f, -0.2f, -3.0f));
+	SceneObject* item3 = new StaticSceneObject(tex4, vec3(-5.5f, -0.2f, -3.0f));
 	objects.push_back(item3);
 
-	void* ctx = new tuple< vector<Item*>* >(&items);
+	items[2]->changeState(shared_ptr<State>(new OpeningState(shared_ptr<Chain>(new Chain(5.0f)))));
+
+	/*void* ctx = new tuple< vector<Item*>* >(&items);
 	shared_ptr<Modifier> th(new MoveYModifier(0.3f, -1.3f, 0.0f, items[3], [](void* context)->void{
 		tuple< vector<Item*>* >* tpl = reinterpret_cast< tuple< vector<Item*>* >* >(context);
 
@@ -82,7 +86,7 @@ void Scene::onInit(){
 
 		(*get<0>(*tpl))[2]->registerModifier(the);
 	}, ctx2));
-	registerUpdateHandler(th2);
+	registerUpdateHandler(th2);*/
 }
 
 void Scene::onTimer(){

@@ -14,7 +14,7 @@ Modifier::Modifier(float duration, SceneObject* object, M_CALLBACK, void* contex
 }
 
 Modifier::~Modifier(){
-	delete m_context;
+	//delete m_context;
 }
 
 void Modifier::windUpClock(){
