@@ -97,6 +97,8 @@
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="OpenedState.h" />
     <ClInclude Include="OpeningState.h" />
+    <ClInclude Include="OwnedState.h" />
+    <ClInclude Include="ScaleYModifier.h" />
     <ClInclude Include="StaticSceneObject.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
@@ -121,6 +123,8 @@
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="OpenedState.cpp" />
     <ClCompile Include="OpeningState.cpp" />
+    <ClCompile Include="OwnedState.cpp" />
+    <ClCompile Include="ScaleYModifier.cpp" />
     <ClCompile Include="StaticSceneObject.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />

@@ -18,6 +18,7 @@ public:
 	void windUpClock();
 	void onUpdate();
 	bool isTerminated();
+	bool TimerHandler::operator ==(const TimerHandler& other);
 private:
 	bool isReadyToTick();
 };

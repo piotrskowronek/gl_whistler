@@ -31,22 +31,22 @@ void Scene::onInit(){
 	Terrain* terr = new Terrain();
 	//items.push_back(terr);
 
-	vector< vec3 > its;
-	its.push_back(vec3(3.0f, 0.0f, 0.0f));
-	its.push_back(vec3(0.0f, 0.0f, 0.0f));
-	its.push_back(vec3(-3.0f, 0.0f, 0.0f));
-	its.push_back(vec3(1.5f, 0.0f, 2.0f));
-	its.push_back(vec3(-1.5f, 0.0f, 2.0f));
-	its.push_back(vec3(3.0f, 0.0f, 4.0f));
-	its.push_back(vec3(0.0f, 0.0f, 4.0f));
-	its.push_back(vec3(-3.0f, 0.0f, 4.0f));
+	vector< pair< vec3, unsigned char > > its;
+	its.push_back(make_pair<vec3, unsigned char>(vec3(-3.0f, 0.0f, 0.0f), 'w'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(0.0f, 0.0f, 0.0f), 'e'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(3.0f, 0.0f, 0.0f), 'r'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(-1.5f, 0.0f, 2.0f), 's'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(1.5f, 0.0f, 2.0f), 'd'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(-3.0f, 0.0f, 4.0f), 'z'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(0.0f, 0.0f, 4.0f), 'x'));
+	its.push_back(make_pair<vec3, unsigned char>(vec3(3.0f, 0.0f, 4.0f), 'c'));
 
 	for (int i = 0; i < its.size(); i++)
 	{
-		Item* item = new Item(tex, its[i]);
+		Item* item = new Item(tex, its[i].first, its[i].second);
 		items.push_back(item);
 		objects.push_back(item);
-		SceneObject* item2 = new StaticSceneObject(tex2, its[i]);
+		SceneObject* item2 = new StaticSceneObject(tex2, its[i].first);
 		objects.push_back(item2);
 	}
 
@@ -97,6 +97,11 @@ void Scene::start(){
 	items[hole_num]->getState()->enqueueOpening(hole_num);
 }
 
+void Scene::onKeyDown(unsigned char key, int x, int y) {
+	for (size_t i = 0; i < items.size(); i++)
+		items[i]->onKeyDown(key, x, y);
+}
+
 void Scene::onTimer(){
 	vector< shared_ptr< TimerHandler > >::iterator it;
 	for (int i = 0; i < handlers.size(); i++)
@@ -119,6 +124,17 @@ void Scene::onTimer(){
 void Scene::registerUpdateHandler(shared_ptr<TimerHandler> th){
 	handlers.push_back(th);
 	th->windUpClock();
+}
+
+void Scene::unregisterUpdateHandler(shared_ptr<TimerHandler> th){
+	vector< shared_ptr< TimerHandler > >::iterator it;
+	it = handlers.begin();
+	while (it != handlers.end()) {
+		if (**it == *th)
+			it = handlers.erase(it);
+		else
+			it++;
+	}
 }
 
 void Scene::onRender(){

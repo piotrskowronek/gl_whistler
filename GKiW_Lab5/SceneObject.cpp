@@ -8,20 +8,20 @@
 SceneObject::SceneObject(GLuint modelListId, vec3 pos)
 	: m_modelListId(modelListId)
 	, m_pos(pos)
-	, m_pos_offset(vec3(0.0f, 0.0f, 0.0f)) {
+	, m_pos_offset(vec3(0.0f, 0.0f, 0.0f))
+	, m_scale_multipler(vec3(1.0f, 1.0f, 1.0f)) {
 }
 
 void SceneObject::onRender(){
 	glPushMatrix();
 		glTranslatef(m_pos.x + m_pos_offset.x, m_pos.y + m_pos_offset.y, m_pos.z + m_pos_offset.z);
+		glScalef(1.0f * m_scale_multipler.x, 1.0f * m_scale_multipler.y, 1.0f * m_scale_multipler.z);
 		glCallList(m_modelListId);
 	glPopMatrix();
 }
 
 void SceneObject::onTimer(){
 	vector< shared_ptr< Modifier > >::iterator it;
-	/*for (it = modifiers.begin(); it != modifiers.end(); it++)
-		(*it)->onUpdate();*/
 	for (int i = 0; i < modifiers.size(); i++)
 		modifiers[i]->onUpdate();
 

@@ -5,6 +5,7 @@
 #include "TimerHandler.h"
 #include "Scene.h"
 #include "OpeningState.h"
+#include "OwnedState.h"
 extern Scene* scene;
 
 
@@ -18,11 +19,13 @@ OpenedState::OpenedState()
 
 void OpenedState::onInit(){
 	m_item->m_pos_offset.y = 0.0f;
+	m_item->m_scale_multipler.y = 1.0f;
 
-	scene->registerUpdateHandler(shared_ptr<TimerHandler>(new TimerHandler(0.5f, false, [](void* context)->void{
+	m_update_handler = shared_ptr<TimerHandler>(new TimerHandler(0.5f, false, [](void* context)->void{
 		State* outer = (State*)context;
 		outer->m_item->getState()->terminate();
-	}, this)));
+	}, this));
+	scene->registerUpdateHandler(m_update_handler);
 }
 
 void OpenedState::terminate(){
@@ -38,4 +41,16 @@ void OpenedState::terminate(){
 
 void OpenedState::enqueueOpening(int hole_num){
 	scene->items[hole_num]->getState()->changeStateOnEnd(shared_ptr<State>(new MissingClosingState(shared_ptr<Chain>(new Chain(0.5f, hole_num, true)))));
+}
+
+void OpenedState::onKeyDown(unsigned char key, int x, int y){
+	if ( m_item->m_key != key )
+		return;
+
+	scene->unregisterUpdateHandler(m_update_handler);
+
+	if (m_chain != NULL)
+		m_item->changeState(shared_ptr<State>(new OwnedState(m_chain)));
+	else
+		m_item->changeState(shared_ptr<State>(new OwnedState()));
 }

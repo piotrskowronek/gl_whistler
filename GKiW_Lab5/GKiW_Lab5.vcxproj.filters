@@ -111,6 +111,12 @@
     <ClInclude Include="MissingClosingState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
+    <ClInclude Include="ScaleYModifier.h">
+      <Filter>Header Files\Modifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="OwnedState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -174,6 +180,12 @@
       <Filter>Source Files\States</Filter>
     </ClCompile>
     <ClCompile Include="MissingClosingState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleYModifier.cpp">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="OwnedState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>

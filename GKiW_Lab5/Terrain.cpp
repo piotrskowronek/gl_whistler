@@ -4,7 +4,7 @@
 
 
 Terrain::Terrain()
-	: Item(0, vec3())
+	: Item(0, vec3(), 'l')
 {
 	m_grassTexture = new CTexture("Resources\\tex\\metal.bmp");
 	m_grassTexture->Load();

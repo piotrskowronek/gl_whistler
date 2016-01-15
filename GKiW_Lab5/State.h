@@ -17,5 +17,6 @@ public:
 	void changeStateOnEnd(shared_ptr<State>);
 	virtual void terminate() {};
 	virtual void onInit() {};
+	virtual void onKeyDown(unsigned char key, int x, int y) {};
 	virtual void enqueueOpening(int) {};
 };

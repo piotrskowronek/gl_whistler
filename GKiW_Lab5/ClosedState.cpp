@@ -21,6 +21,7 @@ void ClosedState::onInit(){
 	}
 		
 	m_item->m_pos_offset.y = -1.3f;
+	m_item->m_scale_multipler.y = 1.0f;
 }
 
 void ClosedState::enqueueOpening(int hole_num){

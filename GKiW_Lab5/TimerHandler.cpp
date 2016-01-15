@@ -44,3 +44,12 @@ bool TimerHandler::isReadyToTick(){
 		return true;
 	return false;
 }
+
+bool TimerHandler::operator ==(const TimerHandler& other) {
+    return (
+		m_duration == other.m_duration &&
+		m_repeat == other.m_repeat &&
+		m_context == other.m_context &&
+		m_birth == other.m_birth
+	);
+}

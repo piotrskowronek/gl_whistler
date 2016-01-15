@@ -101,6 +101,8 @@ void OnKeyPress(unsigned char key, int x, int y) {
 }
 
 void OnKeyDown(unsigned char key, int x, int y) {
+	scene->onKeyDown(key, x, y);
+
 	if (key == 27) {
 		glutLeaveMainLoop();
 	}
@@ -142,7 +144,7 @@ void OnTimer(int id) {
 		glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
 	}
 
-	if (keystate['w']) {
+	/*if (keystate['w']) {
 		player.velM = player.speed;
 	}
 	if (keystate['s']) {
@@ -165,7 +167,7 @@ void OnTimer(int id) {
 	}
 	if (keystate['c']) {
 		player.velRX = player.speed;
-	}
+	}*/
 
 	float T = acos(player.dir.y);
 	float G = atan2(player.dir.z, player.dir.x);

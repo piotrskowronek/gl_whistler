@@ -20,8 +20,10 @@ public:
 	void onInit();
 	void onRender();
 	void onTimer();
+	void onKeyDown(unsigned char key, int x, int y);
 
 	void start();
 
 	void registerUpdateHandler(shared_ptr<TimerHandler>);
+	void unregisterUpdateHandler(shared_ptr<TimerHandler>);
 };
