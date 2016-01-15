@@ -29,6 +29,7 @@ float mouseSensitivity = .15f;
 
 int main(int argc, char* argv[])
 {
+	srand(time(NULL));
 	glutInit(&argc, argv);
 
 	glutInitWindowPosition(100, 100);

@@ -9,4 +9,5 @@ public:
 	ClosedState(shared_ptr<Chain>);
 	ClosedState();
 	void onInit();
+	void enqueueOpening(int);
 };

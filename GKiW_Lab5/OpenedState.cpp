@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "TimerHandler.h"
 #include "Scene.h"
+#include "OpeningState.h"
 extern Scene* scene;
 
 
@@ -33,4 +34,8 @@ void OpenedState::terminate(){
 		else
 			m_item->changeState(shared_ptr<State>(new MissingClosingState()));
 	}
+}
+
+void OpenedState::enqueueOpening(int hole_num){
+	scene->items[hole_num]->getState()->changeStateOnEnd(shared_ptr<State>(new MissingClosingState(shared_ptr<Chain>(new Chain(0.5f, hole_num, true)))));
 }

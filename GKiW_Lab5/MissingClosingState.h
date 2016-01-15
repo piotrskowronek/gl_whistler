@@ -15,4 +15,5 @@ public:
 	MissingClosingState();
 	void changeStateOnEnd(shared_ptr<State> state);
 	void onInit();
+	void enqueueOpening(int);
 };

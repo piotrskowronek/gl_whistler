@@ -17,4 +17,5 @@ public:
 	void changeStateOnEnd(shared_ptr<State>);
 	virtual void terminate() {};
 	virtual void onInit() {};
+	virtual void enqueueOpening(int) {};
 };

@@ -20,8 +20,10 @@ void SceneObject::onRender(){
 
 void SceneObject::onTimer(){
 	vector< shared_ptr< Modifier > >::iterator it;
-	for (it = modifiers.begin(); it != modifiers.end(); it++)
-		(*it)->onUpdate();
+	/*for (it = modifiers.begin(); it != modifiers.end(); it++)
+		(*it)->onUpdate();*/
+	for (int i = 0; i < modifiers.size(); i++)
+		modifiers[i]->onUpdate();
 
 	it = modifiers.begin();
 	while (it != modifiers.end()) {

@@ -10,4 +10,5 @@ public:
 	OpenedState();
 	void terminate();
 	void onInit();
+	void enqueueOpening(int);
 };

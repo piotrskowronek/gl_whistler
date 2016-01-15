@@ -4,6 +4,9 @@
 #include "Item.h"
 #include "Modifier.h"
 #include "MoveYModifier.h"
+#include "Scene.h"
+#include "OpeningState.h"s
+extern Scene* scene;
 
 
 MissingClosingState::MissingClosingState(shared_ptr<Chain> chain)
@@ -16,7 +19,7 @@ MissingClosingState::MissingClosingState()
 
 void MissingClosingState::onInit(){
 	m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.3f, -0.3f, -1.3f, m_item, [](void* context)->void{
-		MissingClosingState* outer = (MissingClosingState*)context;
+		State* outer = (State*)context;
 
 		if (outer->m_nextState != NULL)
 			outer->m_item->changeState(outer->m_nextState);
@@ -31,4 +34,8 @@ void MissingClosingState::onInit(){
 
 void MissingClosingState::changeStateOnEnd(shared_ptr<State> state){
 	m_nextState = state;
+}
+
+void MissingClosingState::enqueueOpening(int hole_num){
+	scene->items[hole_num]->getState()->changeStateOnEnd(shared_ptr<State>(new ClosedState(shared_ptr<Chain>(new Chain(0.5f, hole_num, true)))));
 }

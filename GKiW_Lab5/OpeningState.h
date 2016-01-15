@@ -14,4 +14,5 @@ public:
 	OpeningState(shared_ptr<Chain>);
 	void changeStateOnEnd(shared_ptr<State> state);
 	void onInit();
+	void enqueueOpening(int);
 };

@@ -62,7 +62,10 @@ void Scene::onInit(){
 	SceneObject* item3 = new StaticSceneObject(tex4, vec3(-5.5f, -0.2f, -3.0f));
 	objects.push_back(item3);
 
-	items[2]->changeState(shared_ptr<State>(new OpeningState(shared_ptr<Chain>(new Chain(5.0f)))));
+	registerUpdateHandler(shared_ptr<TimerHandler>(new TimerHandler(0.1f, true, [](void* context)->void{
+		Scene* scene = (Scene*)context;
+		scene->start();
+	}, this)));
 
 	/*void* ctx = new tuple< vector<Item*>* >(&items);
 	shared_ptr<Modifier> th(new MoveYModifier(0.3f, -1.3f, 0.0f, items[3], [](void* context)->void{
@@ -89,10 +92,15 @@ void Scene::onInit(){
 	registerUpdateHandler(th2);*/
 }
 
+void Scene::start(){
+	int hole_num = rand() % 8;
+	items[hole_num]->getState()->enqueueOpening(hole_num);
+}
+
 void Scene::onTimer(){
 	vector< shared_ptr< TimerHandler > >::iterator it;
-	for (it = handlers.begin(); it != handlers.end(); it++)
-		(*it)->onUpdate();
+	for (int i = 0; i < handlers.size(); i++)
+		handlers[i]->onUpdate();
 
 	it = handlers.begin();
 	while (it != handlers.end()) {
