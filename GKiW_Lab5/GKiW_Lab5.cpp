@@ -15,7 +15,7 @@ double T = 0.0;
 int mouseX = 0;
 int mouseY = 0;
 
-int fps = 120;
+int fps = 1000;
 clock_t begin = clock();
 
 bool captureMouse = true;
@@ -169,7 +169,7 @@ void OnTimer(int id) {
 		player.velRX = player.speed;
 	}*/
 
-	float T = acos(player.dir.y);
+	/*float T = acos(player.dir.y);
 	float G = atan2(player.dir.z, player.dir.x);
 	T -= player.velRX * .03f;
 	G += player.velRY * .03f;
@@ -203,7 +203,7 @@ void OnTimer(int id) {
 	player.velRX /= 1.2;
 	player.velRY /= 1.2;
 	player.velM /= 1.2;
-	player.velS /= 1.2;
+	player.velS /= 1.2;*/
 
 	scene->onTimer();
 

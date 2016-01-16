@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <vector>
 #include <memory>
+#include <time.h>
 
 class TimerHandler;
 class SceneObject;
@@ -11,6 +12,7 @@ class Scene {
 protected:
 	vector<SceneObject*> objects;
 	GLuint texId, texId2;
+	clock_t m_gameStartTime;
 
 	vector< shared_ptr< TimerHandler > > handlers;
 public:

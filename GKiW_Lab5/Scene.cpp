@@ -23,12 +23,12 @@ void Scene::onInit(){
 	GLuint tex2 = LoadObj("pipe");
 	GLuint tex3 = LoadObj("floor");
 	GLuint tex4 = LoadObj("arch");
-	CTexture tx("Resources\\tex\\grass.bmp", texId);
+	/*CTexture tx("Resources\\tex\\grass.bmp", texId);
 	tx.Load();
 	CTexture tx2("Resources\\tex\\checkboard.bmp", texId2);
-	tx2.Load();
+	tx2.Load();*/
 
-	Terrain* terr = new Terrain();
+	//Terrain* terr = new Terrain();
 	//items.push_back(terr);
 
 	vector< pair< vec3, unsigned char > > its;
@@ -62,10 +62,20 @@ void Scene::onInit(){
 	SceneObject* item3 = new StaticSceneObject(tex4, vec3(-5.5f, -0.2f, -3.0f));
 	objects.push_back(item3);
 
-	registerUpdateHandler(shared_ptr<TimerHandler>(new TimerHandler(0.1f, true, [](void* context)->void{
-		Scene* scene = (Scene*)context;
-		scene->start();
-	}, this)));
+	m_gameStartTime = clock();
+	auto th = shared_ptr<TimerHandler>(new TimerHandler(2.0f, true, [](void* context)->void{
+		auto ctx = (pair< Scene*, shared_ptr<TimerHandler> >*)context;
+
+		clock_t tick = clock();
+		double x = double(tick - ctx->first->m_gameStartTime) / CLOCKS_PER_SEC;
+		double y = 1 / (0.1 * x + 0.5);
+		ctx->second->m_duration = y;
+		ctx->second->windUpClock();
+		
+		ctx->first->start();
+	}, NULL));
+	th->m_context = new pair< Scene*, shared_ptr<TimerHandler> >(this, th);
+	registerUpdateHandler(th);
 
 	/*void* ctx = new tuple< vector<Item*>* >(&items);
 	shared_ptr<Modifier> th(new MoveYModifier(0.3f, -1.3f, 0.0f, items[3], [](void* context)->void{

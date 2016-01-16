@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Modifier.h"
 #include "ScaleYModifier.h"
+#include "MoveYModifier.h"
 #include "Scene.h"
 #include "OpeningState.h"
 #include "TimerHandler.h"
@@ -23,14 +24,18 @@ void OwnedState::onInit(){
 		scene->registerUpdateHandler(shared_ptr<TimerHandler>(new TimerHandler(1.0f, false, [](void* context)->void{
 			State* outer = (State*)context;
 
-			if (outer->m_nextState != NULL)
-				outer->m_item->changeState(outer->m_nextState);
-			else {
-				if (outer->m_chain != NULL)
-					outer->m_item->changeState(shared_ptr<State>(new ClosedState(outer->m_chain)));
-				else
-					outer->m_item->changeState(shared_ptr<State>(new ClosedState()));
-			}
+			outer->m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.1f, 0.0f, -1.3f, outer->m_item, [](void* context)->void{
+				State* outer = (State*)context;
+
+				if (outer->m_nextState != NULL)
+					outer->m_item->changeState(outer->m_nextState);
+				else {
+					if (outer->m_chain != NULL)
+						outer->m_item->changeState(shared_ptr<State>(new ClosedState(outer->m_chain)));
+					else
+						outer->m_item->changeState(shared_ptr<State>(new ClosedState()));
+				}
+			}, context)));
 		}, context)));
 	}, this)));
 }

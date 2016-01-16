@@ -15,7 +15,7 @@ OpeningState::OpeningState(shared_ptr<Chain> chain)
 void OpeningState::onInit(){
 	m_item->m_scale_multipler.y = 1.0f;
 
-	m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.3f, -1.3f, -0.3f, m_item, [](void* context)->void{
+	m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.2f, -1.3f, -0.3f, m_item, [](void* context)->void{
 		State* outer = (State*)context;
 
 		if (outer->m_nextState != NULL)

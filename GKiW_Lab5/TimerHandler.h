@@ -7,12 +7,13 @@
 
 class TimerHandler {
 protected:
-	float m_duration;
 	bool m_repeat;
-	void* m_context;
 	clock_t m_birth;
 	TH_CALLBACK;
 public:
+	void* m_context;
+	float m_duration;
+
 	TimerHandler(float duration, bool repeat, TH_CALLBACK, void* context);
 	~TimerHandler();
 	void windUpClock();
