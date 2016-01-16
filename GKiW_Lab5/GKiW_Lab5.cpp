@@ -3,6 +3,7 @@
 #include <memory>
 #include <time.h>
 #include "Scene.h"
+#include "Light.h"
 
 using namespace std;
 
@@ -22,6 +23,11 @@ bool captureMouse = true;
 bool free3DMovement = true;
 
 Scene* scene = new Scene;
+Light* light;
+bool isEnd = false;
+
+int lives = 10;
+int points = 0;
 
 float mouseSensitivity = .15f;
 
@@ -37,7 +43,7 @@ int main(int argc, char* argv[])
 	glutSetOption(GLUT_MULTISAMPLE, 8);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
-	glutCreateWindow("glWhistler");
+	glutCreateWindow("glWhackTheMario");
 
 	glutDisplayFunc(OnRender);
 	glutReshapeFunc(OnReshape);
@@ -58,7 +64,7 @@ int main(int argc, char* argv[])
 	glEnable(GL_LIGHT1);
 	
 	float gl_amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gl_amb);
+	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gl_amb);
 
 	/*player.pos.x = 0.081256f;
 	player.pos.y = 3.542898f;
@@ -135,6 +141,9 @@ void OnMouseMove(int x, int y) {
 
 void OnTimer(int id) {
 	glutTimerFunc((int)(1000 / fps), OnTimer, 0);
+
+	string title = "glWhackTheMario (Lives left: " + to_string(lives) + ", Points: " + to_string(points) + ")";
+	glutSetWindowTitle(title.c_str());
 
 	#pragma region Ruch kamery
 

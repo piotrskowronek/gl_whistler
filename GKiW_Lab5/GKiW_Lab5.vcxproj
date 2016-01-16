@@ -91,6 +91,8 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Level0.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightModifier.h" />
     <ClInclude Include="MissingClosingState.h" />
     <ClInclude Include="Modifier.h" />
     <ClInclude Include="MoveYModifier.h" />
@@ -117,6 +119,8 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Level0.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightModifier.cpp" />
     <ClCompile Include="MissingClosingState.cpp" />
     <ClCompile Include="Modifier.cpp" />
     <ClCompile Include="MoveYModifier.cpp" />

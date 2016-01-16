@@ -14,6 +14,10 @@
 #include "StaticSceneObject.h"
 #include "MoveYModifier.h"
 #include "Chain.h"
+#include "Light.h"
+#include "LightModifier.h"
+extern Light* light;
+extern int lives;
 
 using namespace std;
 
@@ -61,6 +65,9 @@ void Scene::onInit(){
 
 	SceneObject* item3 = new StaticSceneObject(tex4, vec3(-5.5f, -0.2f, -3.0f));
 	objects.push_back(item3);
+
+	light = new Light(tex, vec3());
+	objects.push_back(light);
 
 	m_gameStartTime = clock();
 	auto th = shared_ptr<TimerHandler>(new TimerHandler(2.0f, true, [](void* context)->void{
@@ -148,16 +155,6 @@ void Scene::unregisterUpdateHandler(shared_ptr<TimerHandler> th){
 }
 
 void Scene::onRender(){
-	#pragma region Swiatlo
-		float l0_amb[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-		float l0_dif[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float l0_spe[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float l0_pos[] = { 1.0f, 6.0f, 5.0f, 1.0f };
-		glLightfv(GL_LIGHT0, GL_AMBIENT, l0_amb);
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, l0_dif);
-		glLightfv(GL_LIGHT0, GL_SPECULAR, l0_spe);
-		glLightfv(GL_LIGHT0, GL_POSITION, l0_pos);
-	#pragma endregion
 	/*
 	glPushMatrix();
 		glDisable(GL_LIGHTING);

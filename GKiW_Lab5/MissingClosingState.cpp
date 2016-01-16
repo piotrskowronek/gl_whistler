@@ -5,8 +5,13 @@
 #include "Modifier.h"
 #include "MoveYModifier.h"
 #include "Scene.h"
-#include "OpeningState.h"s
+#include "OpeningState.h"
+#include "Light.h"
+#include "LightModifier.h"
 extern Scene* scene;
+extern int lives;
+extern Light* light;
+extern bool isEnd;
 
 
 MissingClosingState::MissingClosingState(shared_ptr<Chain> chain)
@@ -18,6 +23,17 @@ MissingClosingState::MissingClosingState()
 }
 
 void MissingClosingState::onInit(){
+	if ( lives > 0 )
+		lives--;
+
+	if ( lives <= 0 && !isEnd ){
+		isEnd = true;
+
+		light->registerModifier(shared_ptr<Modifier>(new LightModifier(3.0f, 1.0f, 0.0f, light, [](void* context)->void{
+			glutLeaveMainLoop();
+		}, NULL)));
+	}
+
 	m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.2f, 0.0f, -1.3f, m_item, [](void* context)->void{
 		State* outer = (State*)context;
 

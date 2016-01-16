@@ -9,6 +9,8 @@
 #include "OpeningState.h"
 #include "TimerHandler.h"
 extern Scene* scene;
+extern int points;
+extern bool isEnd;
 
 
 OwnedState::OwnedState(shared_ptr<Chain> chain)
@@ -20,6 +22,9 @@ OwnedState::OwnedState()
 }
 
 void OwnedState::onInit(){
+	if ( !isEnd )
+		points++;
+
 	m_item->registerModifier(shared_ptr<Modifier>(new ScaleYModifier(0.2f, 1.0f, 0.7f, m_item, [](void* context)->void{
 		scene->registerUpdateHandler(shared_ptr<TimerHandler>(new TimerHandler(1.0f, false, [](void* context)->void{
 			State* outer = (State*)context;

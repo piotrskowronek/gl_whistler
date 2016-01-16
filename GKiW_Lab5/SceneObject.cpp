@@ -9,7 +9,8 @@ SceneObject::SceneObject(GLuint modelListId, vec3 pos)
 	: m_modelListId(modelListId)
 	, m_pos(pos)
 	, m_pos_offset(vec3(0.0f, 0.0f, 0.0f))
-	, m_scale_multipler(vec3(1.0f, 1.0f, 1.0f)) {
+	, m_scale_multipler(vec3(1.0f, 1.0f, 1.0f))
+	, m_light_multipler(vec3(1.0f, 1.0f, 1.0f)){
 }
 
 void SceneObject::onRender(){

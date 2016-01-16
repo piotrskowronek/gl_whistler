@@ -13,10 +13,11 @@ protected:
 public:
 	vec3 m_pos_offset;
 	vec3 m_scale_multipler;
+	vec3 m_light_multipler;
 
 	SceneObject(GLuint modelListId, vec3 pos);
 	void onTimer();
-	void onRender();
+	virtual void onRender();
 
 	void registerModifier(shared_ptr<Modifier> modifier);
 };
