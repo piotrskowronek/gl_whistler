@@ -26,7 +26,7 @@ Scene* scene = new Scene;
 Light* light;
 bool isEnd = false;
 
-int lives = 100;
+int lives = 20;
 int points = 0;
 
 float mouseSensitivity = .15f;
@@ -62,6 +62,13 @@ int main(int argc, char* argv[])
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
+
+	glEnable(GL_FOG);
+	float gl_fogcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogfv(GL_FOG_COLOR, gl_fogcolor);
+	glFogf(GL_FOG_START, 5.0f);
+	glFogf(GL_FOG_END, 30.0f);
 	
 	float gl_amb[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gl_amb);
