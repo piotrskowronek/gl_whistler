@@ -34,6 +34,7 @@ void MissingClosingState::onInit(){
 		}, NULL)));
 	}
 
+	
 	m_item->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.2f, 0.0f, -1.3f, m_item, [](void* context)->void{
 		State* outer = (State*)context;
 

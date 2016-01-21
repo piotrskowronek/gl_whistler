@@ -27,6 +27,7 @@ void Scene::onInit(){
 	GLuint tex2 = LoadObj("pipe");
 	GLuint tex3 = LoadObj("floor");
 	GLuint tex4 = LoadObj("arch");
+	GLuint tex5 = LoadObj("block");
 	/*CTexture tx("Resources\\tex\\grass.bmp", texId);
 	tx.Load();
 	CTexture tx2("Resources\\tex\\checkboard.bmp", texId2);
@@ -47,7 +48,13 @@ void Scene::onInit(){
 
 	for (int i = 0; i < its.size(); i++)
 	{
+		vec3 k = its[i].first;
+		k.y += 6.5f;
+		SceneObject* item3 = new StaticSceneObject(tex5, k);
+		objects.push_back(item3);
+
 		Item* item = new Item(tex, its[i].first, its[i].second);
+		item->m_block = item3;
 		items.push_back(item);
 		objects.push_back(item);
 		SceneObject* item2 = new StaticSceneObject(tex2, its[i].first);

@@ -26,7 +26,7 @@ Scene* scene = new Scene;
 Light* light;
 bool isEnd = false;
 
-int lives = 10;
+int lives = 100;
 int points = 0;
 
 float mouseSensitivity = .15f;

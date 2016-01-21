@@ -11,6 +11,7 @@ protected:
 	shared_ptr<State> m_state;
 public:
 	unsigned char m_key;
+	SceneObject* m_block;
 
 	Item(GLuint modelListId, vec3 pos, unsigned char key);
 	void changeState(shared_ptr<State> state);

@@ -21,7 +21,7 @@ void OpenedState::onInit(){
 	m_item->m_pos_offset.y = 0.0f;
 	m_item->m_scale_multipler.y = 1.0f;
 
-	m_update_handler = shared_ptr<TimerHandler>(new TimerHandler(0.5f, false, [](void* context)->void{
+	m_update_handler = shared_ptr<TimerHandler>(new TimerHandler(1.0f, false, [](void* context)->void{
 		State* outer = (State*)context;
 		outer->m_item->getState()->terminate();
 	}, this));
