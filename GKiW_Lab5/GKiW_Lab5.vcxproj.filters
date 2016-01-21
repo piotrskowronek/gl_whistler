@@ -123,6 +123,9 @@
     <ClInclude Include="LightModifier.h">
       <Filter>Header Files\Modifiers</Filter>
     </ClInclude>
+    <ClInclude Include="ScaleModifier.h">
+      <Filter>Header Files\Modifiers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -198,6 +201,9 @@
       <Filter>Source Files\Items</Filter>
     </ClCompile>
     <ClCompile Include="LightModifier.cpp">
+      <Filter>Source Files\Modifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleModifier.cpp">
       <Filter>Source Files\Modifiers</Filter>
     </ClCompile>
   </ItemGroup>

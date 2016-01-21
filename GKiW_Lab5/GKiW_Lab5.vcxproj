@@ -101,6 +101,7 @@
     <ClInclude Include="OpenedState.h" />
     <ClInclude Include="OpeningState.h" />
     <ClInclude Include="OwnedState.h" />
+    <ClInclude Include="ScaleModifier.h" />
     <ClInclude Include="ScaleYModifier.h" />
     <ClInclude Include="StaticSceneObject.h" />
     <ClInclude Include="Scene.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="OpenedState.cpp" />
     <ClCompile Include="OpeningState.cpp" />
     <ClCompile Include="OwnedState.cpp" />
+    <ClCompile Include="ScaleModifier.cpp" />
     <ClCompile Include="ScaleYModifier.cpp" />
     <ClCompile Include="StaticSceneObject.cpp" />
     <ClCompile Include="Scene.cpp" />

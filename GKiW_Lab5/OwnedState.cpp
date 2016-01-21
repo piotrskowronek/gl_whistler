@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Modifier.h"
 #include "ScaleYModifier.h"
+#include "ScaleModifier.h"
 #include "MoveYModifier.h"
 #include "Scene.h"
 #include "OpeningState.h"
@@ -31,8 +32,13 @@ void OwnedState::onInit(){
 			State* outer = (State*)context;
 			outer->m_item->m_block->registerModifier(shared_ptr<Modifier>(new MoveYModifier(0.25f, -3.5f, -4.4f, outer->m_item->m_block, [](void* context)->void {
 				State* outer = (State*)context;
-
-				outer->m_item->m_block->m_pos_offset.y = 0.0f;
+				outer->m_item->m_block->registerModifier(shared_ptr<Modifier>(new ScaleModifier(0.25f, 1.0f, 0.0f, outer->m_item->m_block, [](void* context)->void {
+					State* outer = (State*)context;
+					outer->m_item->m_block->m_scale_multipler.x = 1.0f;
+					outer->m_item->m_block->m_scale_multipler.y = 1.0f;
+					outer->m_item->m_block->m_scale_multipler.z = 1.0f;
+					outer->m_item->m_block->m_pos_offset.y = 6.5f;
+				}, outer)));
 			}, outer)));
 		}, outer)));
 
